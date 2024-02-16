@@ -1,0 +1,117 @@
+<nav class="navbar navbar-light bg-light justify-content-between">
+  <a class="navbar-brand mx-3"><h1 class="text-center">Firebase CRUD</h1> </a>
+
+  <button
+    class="btn btn-outline-success my-2 my-sm-0 mx-3"
+    type="submit"
+    (click)="logout()"
+  >
+    Logout
+  </button>
+</nav>
+
+<div class="container col-md-6">
+
+  <p class="text-center text-danger mt-2">{{msg}}</p>
+  <form
+    #form="ngForm"
+    (ngSubmit)="addOrUpdateData(form)"
+    class="container mt-2"
+  >
+    <div class="form-group">
+      <label for="name">Name</label><br />
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="name"
+        ngModel
+        required
+        autocorrect="off"
+        autocapitalize="none"
+        [(ngModel)]="editingData.name"
+        #name="ngModel"
+      />
+      <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger">
+        <div *ngIf="name.errors?.['required']">Name is required.</div>
+      </div>
+    </div>
+
+    <div class="form-group mt-3">
+      <label for="email">Email</label><br />
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        ngModel
+        required
+		email
+        autocorrect="off"
+        autocapitalize="none"
+        [(ngModel)]="editingData.email"
+		#email="ngModel"
+      />
+	  <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
+        <div *ngIf="email.errors?.['required']">Email is required.</div>
+      </div>
+    </div>
+
+    <div class="form-group mt-3">
+      <label for="password">Password</label><br />
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        name="password"
+        ngModel
+        required
+        autocorrect="off"
+        autocapitalize="none"
+        [(ngModel)]="editingData.password"
+		#password="ngModel"
+      />
+	  <div *ngIf="password.invalid && (password.dirty || password.touched)" class="text-danger">
+        <div *ngIf="password.errors?.['required']">Password is required.</div>
+      </div>
+    </div>
+    <br />
+    <div class="d-flex justify-content-between">
+      <button type="submit" class="btn btn-primary">
+        {{ formMode === "Create" ? "Save Data" : "Update Data" }}
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="cancelEdit(form)"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+
+  <table class="table table-striped mt-5">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of userData | async">
+        <td>{{ data.name }}</td>
+        <td>{{ data.email }}</td>
+        <td>
+          <button class="btn btn-primary" (click)="editData(data)">Edit</button>
+        </td>
+        <td>
+          <button class="btn btn-danger" (click)="deleteData(data.id)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
